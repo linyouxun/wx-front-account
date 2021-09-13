@@ -22,7 +22,7 @@
     <view class="weui-cells__title">花费</view>
     <view class="weui-cells weui-cells_after-title">
       <view class="weui-cell weui-cell_input">
-        <input class="weui-input" type="number" placeholder="花费" bindinput="bindKeyInput" value="{{money}}" />
+        <input class="weui-input" type="digit" placeholder="花费" bindinput="bindKeyInput" value="{{money}}" />
       </view>
     </view>
   </view>
