@@ -1,18 +1,30 @@
-//index.js
-const app = getApp();
+//Home.js
+import request from "../../utils/request";
 
 Page({
   data: {
     avatarUrl: "./user-unlogin.png",
     userInfo: {},
     hasUserInfo: false,
-    logged: false,
-    takeSession: false,
-    requestResult: "",
     canIUseGetUserProfile: false,
     canIUseOpenData: wx.canIUse("open-data.type.userAvatarUrl"), // 如需尝试获取用户信息可改为false
+    date: "",
+    list: [],
   },
-
+  onShow() {
+    const current = new Date();
+    const date = `${current.getFullYear()}-${current
+      .getMonth()
+      .toString()
+      .padStart(2, 0)}-${current.getDay().toString().padStart(2, 0)}`;
+    this.setData({ date });
+    if (wx.getUserProfile) {
+      this.setData({
+        canIUseGetUserProfile: true,
+      });
+    }
+    this.fetchList(date);
+  },
   onLoad: async function () {
     if (!wx.cloud) {
       wx.redirectTo({
@@ -20,25 +32,37 @@ Page({
       });
       return;
     }
-    if (wx.getUserProfile) {
-      this.setData({
-        canIUseGetUserProfile: true,
-      });
-    }
+  },
 
-    const res = await wx.cloud.callContainer({
-      config: {
-        env: "account-8gjt64jg11892b13",
-      },
-      path: "/api/expenses/list", // 填入业务自定义路径和参数
-      method: "POST",
-      header: {
-        "X-WX-SERVICE": "account", // 填入服务名称（微信云托管 - 服务管理 - 服务列表 - 服务名称）
-      },
-      // 其余参数同 wx.request
+  async fetchList(date) {
+    wx.showLoading({
+      title: '加载中',
+    })
+    const res = await request("/api/expenses/list", {
+      data: { useTime: date },
     });
-
-    console.log(res);
+    const list = res.data.data.map((ele) => {
+      const data = {
+        ...ele,
+        moneyFormat: ((ele.money || 0) / 100).toFixed(2) + "￥",
+        useTimeFormat: ele.useTime.replace(
+          /(\d{4}-\d{2}-\d{2}).*(\d{2}:\d{2}:\d{2}).*/g,
+          "$1 $2"
+        ),
+      };
+      data.url =
+        "../ExpenseEdit/ExpenseEdit?" +
+        Object.keys(data)
+          .map((item) => {
+            return `${item}=${data[item] || ''}`;
+          })
+          .join("&");
+      return data;
+    });
+    wx.hideLoading()
+    this.setData({
+      list,
+    });
   },
 
   getUserProfile() {
@@ -66,5 +90,15 @@ Page({
     }
   },
 
- 
+  bindDateChange: function (e) {
+    console.log("picker发送选择改变，携带值为", e.detail.value);
+    this.setData({
+      date: e.detail.value,
+    });
+  },
+  add: function() {
+    wx.navigateTo({
+      url: '../ExpenseEdit/ExpenseEdit?accountId=2',
+     })
+  }
 });

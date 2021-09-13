@@ -1,0 +1,23 @@
+/* pages/ExpenseEdit.wxss */
+@import "../../lib/weui.wxss";
+
+.picker {
+  width: 100%;
+}
+.radio-group {
+  display: flex;
+  flex-direction: row;
+}
+.radio-group-name {
+  display: inline-block;
+  margin-right: 10px;
+}
+.textarea {
+  padding: 10px 0;
+  max-height: 100px;
+}
+
+button{
+  margin-top: 30rpx;
+  margin-bottom: 30rpx;
+}

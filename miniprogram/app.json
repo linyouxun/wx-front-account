@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/Home/Home",
+    "pages/ExpenseEdit/ExpenseEdit",
     "pages/Login/Login",
     "pages/index/index",
     "pages/userConsole/userConsole",

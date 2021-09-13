@@ -159,3 +159,27 @@ page {
   line-height: 36rpx;
   word-break: break-all;
 }
+
+.list {
+  width: 100%;
+  background-color: #fff;
+}
+.list-empty {
+  padding: 20rpx 0;
+  font-size: 24rpx;
+  line-height: 36rpx;
+  word-break: break-all;
+  text-align: center;
+}
+.item {
+  padding: 20rpx 20px;
+  word-break: break-all;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.label {
+  width: 180rpx;
+  font-size: 36rpx;
+  display: inline-block;
+  text-align: right;
+  line-height: 1.5;
+}
